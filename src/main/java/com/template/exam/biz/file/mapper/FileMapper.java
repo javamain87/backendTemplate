@@ -1,6 +1,6 @@
-package com.template.exam.biz.common.file.mapper;
+package com.template.exam.biz.file.mapper;
 
-import com.template.exam.biz.common.file.model.FileVO;
+import com.template.exam.biz.file.model.FileVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

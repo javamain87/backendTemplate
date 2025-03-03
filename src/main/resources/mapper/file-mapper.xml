@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.template.exam.biz.common.file.mapper.FileMapper">
+<mapper namespace="com.template.exam.biz.file.mapper.FileMapper">
     <!-- 파일 저장 -->
-    <insert id="saveFile" parameterType="com.template.exam.biz.common.file.model.FileVO">
+    <insert id="saveFile" parameterType="com.template.exam.biz.file.model.FileVO">
         INSERT INTO tb_file (
         original_filename,
         saved_filename,
@@ -50,7 +50,7 @@
     </insert>
 
     <!-- 파일 정보 조회 -->
-    <select id="getFileById" parameterType="int" resultType="com.template.exam.biz.common.file.model.FileVO">
+    <select id="getFileById" parameterType="int" resultType="com.template.exam.biz.file.model.FileVO">
         SELECT file_id           as fileId,
                original_filename as originalFilename,
                saved_filename    as savedFilename,
@@ -64,7 +64,7 @@
     </select>
 
     <!-- 게시글에 연결된 모든 파일 조회 -->
-    <select id="getFilesByBoardSeq" parameterType="int" resultType="com.template.exam.biz.common.file.model.FileVO">
+    <select id="getFilesByBoardSeq" parameterType="int" resultType="com.template.exam.biz.file.model.FileVO">
         SELECT file_id           as fileId,
                original_filename as originalFilename,
                saved_filename    as savedFilename,
@@ -79,7 +79,7 @@
     </select>
 
     <!-- 파일 정보 수정 -->
-    <update id="updateFile" parameterType="com.template.exam.biz.common.file.model.FileVO">
+    <update id="updateFile" parameterType="com.template.exam.biz.file.model.FileVO">
         UPDATE tb_file
         <set>
             <if test="originalFilename != null">

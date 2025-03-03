@@ -1,7 +1,7 @@
-package com.template.exam.biz.common.file.service;
+package com.template.exam.biz.file.service;
 
-import com.template.exam.biz.common.file.mapper.FileMapper;
-import com.template.exam.biz.common.file.model.FileVO;
+import com.template.exam.biz.file.mapper.FileMapper;
+import com.template.exam.biz.file.model.FileVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

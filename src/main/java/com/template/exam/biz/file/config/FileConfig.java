@@ -1,4 +1,4 @@
-package com.template.exam.biz.common.file.config;
+package com.template.exam.biz.file.config;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;

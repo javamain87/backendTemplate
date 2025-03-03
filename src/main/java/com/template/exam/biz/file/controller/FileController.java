@@ -1,7 +1,7 @@
-package com.template.exam.biz.common.file.controller;
+package com.template.exam.biz.file.controller;
 
-import com.template.exam.biz.common.file.model.FileVO;
-import com.template.exam.biz.common.file.service.FileService;
+import com.template.exam.biz.file.model.FileVO;
+import com.template.exam.biz.file.service.FileService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

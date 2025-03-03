@@ -1,4 +1,4 @@
-package com.template.exam.biz.common.file.model;
+package com.template.exam.biz.file.model;
 
 import lombok.Data;
 
