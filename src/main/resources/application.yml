@@ -1,0 +1,46 @@
+server:
+  port: 8080
+
+spring:
+  web:
+    resources:
+      static-locations: META-INF:/resources, classpath:/resources, classpath:/static, classpath:/static/dist
+  # Database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/templat
+    username: admin
+    password: 123$%
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+      enabled: true
+      resolve-lazily: true
+      location: ${user.home}/temp
+
+file:
+  upload-dir: ${user.home}/storage/uploads/
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.web.multipart: TRACE
+  # jpa properties
+#  jpa:
+#    hibernate:
+#      ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
+#    show-sql: true
+#    database: postgresql
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    open-in-view: false
+#    generate-ddl: true
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+
+
+jwt:
+  secret: ${JWT_SECRET:8O2HQ13etL2BWZvYOiWsJ5uWFoLi6NBUG8divYVoCgtHVvlk3dqRksMl16toztDUeBTSIuOOPvHIrYq11G2BwQ==}
+  expiration-time: ${JWT_EXPIRATION_TIME:36000}
+  refresh-token-expiration-time: ${REFRESH_TOKEN_EXPIRATION_TIME:360000}

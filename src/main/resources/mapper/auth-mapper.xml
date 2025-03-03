@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.template.exam.biz.auth.mapper.AuthMapper">
+    <!-- tb_user 테이블에 사용자 정보 저장 -->
+    <insert id="signup" parameterType="com.template.exam.biz.auth.model.SignupVO">
+        INSERT INTO tb_user (
+        user_id,
+        email,
+        password,
+        user_name
+        ) VALUES (
+        #{userId},
+        #{email},
+        #{password},
+        #{userName}
+        )
+    </insert>
+
+    <!-- tb_user_role 테이블에 사용자 역할 정보 저장 -->
+<!--    <insert id="insertUserRole" parameterType="java.util.Map">-->
+<!--        INSERT INTO tb_user_role (-->
+<!--            user_id,-->
+<!--            role-->
+<!--        ) VALUES (-->
+<!--                     #{userId},-->
+<!--                     #{role}-->
+<!--                 )-->
+<!--    </insert>-->
+
+    <!-- 여러 개의 역할을 한 번에 저장할 수 있는 배치 삽입 -->
+    <insert id="insertUserRoles" parameterType="com.template.exam.biz.auth.model.SignupVO">
+        INSERT INTO tb_auth_role (
+        user_id,
+        roles
+        ) VALUES
+        <foreach collection="roles" item="role" separator=",">
+            (#{userId}, #{role})
+        </foreach>
+    </insert>
+
+    <!-- 사용자 ID로 사용자 정보 조회 -->
+    <select id="findByUserId" parameterType="String" resultType="com.template.exam.biz.auth.model.UserVO">
+        SELECT
+            seq,
+            user_id ,
+            email,
+            password,
+            user_name
+        FROM tb_user
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="findByEmail" parameterType="String" resultType="com.template.exam.biz.auth.model.UserVO">
+        SELECT
+            seq,
+            user_id ,
+            email,
+            password,
+            user_name
+        FROM tb_user
+        WHERE email = #{email}
+    </select>
+
+    <select id="userAndRole" parameterType="String" resultType="com.template.exam.biz.auth.model.UserVO">
+        SELECT
+            a.user_id as userId,
+            a.email,
+            string_agg(b.roles, ',') as roles
+        from tb_user a
+                 left join tb_auth_role b
+                           on a.user_id = b.user_id
+        where email = #{email}
+        group by a.user_id, a.email
+    </select>
+
+    <!-- 사용자 ID로 역할 정보 조회 -->
+    <select id="findRolesByUserId" parameterType="String" resultType="String">
+        SELECT
+            role
+        FROM tb_user_role
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 이메일 중복 확인 -->
+    <select id="countByEmail" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM tb_user
+        WHERE email = #{email}
+    </select>
+
+    <!-- 사용자명 중복 확인 -->
+    <select id="countByUserName" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM tb_user
+        WHERE user_name = #{userName}
+    </select>
+</mapper>

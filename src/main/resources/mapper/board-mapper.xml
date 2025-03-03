@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.template.exam.biz.board.mapper.BoardMapper">
+    <insert id="saveBoard" parameterType="com.template.exam.biz.board.model.ReqBoardVO">
+        insert into tb_board(title,
+                             content,
+                             user_id,
+                             user_name,
+                             file_id,
+                             use_yn)
+        values (
+                #{title},
+                #{content},
+                #{userId},
+                #{userName},
+                #{fileId},
+                #{useYn}
+               )
+    </insert>
+
+    <select id="getBoardList"
+            parameterType="com.template.exam.biz.board.model.ReqBoardVO"
+            resultType="com.template.exam.biz.board.model.ResBoardVO">
+        select
+        seq,
+        title,
+        content,
+        user_id as userId,
+        user_name as userName,
+        file_id as fileId,
+        use_yn as useYn,
+        (create_time::timestamp + ('9 hour')) as createTime,
+        (update_time::timestamp + ('9 hour')) as updateTime
+        from tb_board
+        <where>
+            <if test="title != null and title != ''">
+                and title like CONCAT('%', #{title}, '%')
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name like CONCAT('%', #{userName} ,'%')
+            </if>
+        </where>
+        order by update_time desc
+        limit #{groupNum} offset (#{groupNum} * (#{pageNum} -1))
+    </select>
+
+    <select id="getBoardCnt"
+            parameterType="com.template.exam.biz.board.model.ReqBoardVO"
+            resultType="Integer">
+        select
+        count(*)
+        from tb_board
+        <where>
+            <if test="title != null and title != ''">
+                and title like CONCAT('%', #{title} ,'%')
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name like CONCAT('%', #{userName} ,'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getBoardById" parameterType="Integer"
+            resultType="com.template.exam.biz.board.model.ResBoardVO">
+        select seq,
+               title,
+               content,
+               user_id as userId,
+               user_name as userName,
+               file_id as fileId,
+               use_yn as useYn,
+               create_time as createTime,
+               update_time as updateTime
+        from tb_board
+        where seq = #{seq}
+    </select>
+
+    <select id="updateBoard"
+            parameterType="com.template.exam.biz.board.model.ReqBoardVO"
+            resultType="com.template.exam.biz.board.model.ResBoardVO">
+        update tb_board
+            set
+                <if test="title != null and title != ''">
+                    title = #{title},
+                </if>
+                <if test="content != null and content != ''">
+                    content = #{content},
+                </if>
+                <if test="fileId != null and fileId != ''">
+                    file_id = #{fileId},
+                </if>
+            update_time = CURRENT_TIMESTAMP
+        where seq = #{seq}
+        RETURNING seq
+    </select>
+
+    <select id="deleteBoard"
+            parameterType="com.template.exam.biz.board.model.ReqBoardVO"
+            resultType="com.template.exam.biz.board.model.ResBoardVO">
+        update tb_board
+        set
+        <if test="useYn != null and useYn != ''">
+            use_yn = 'N',
+        </if>
+        update_time = CURRENT_TIMESTAMP
+        where seq = #{seq} RETURNING seq
+    </select>
+</mapper>
